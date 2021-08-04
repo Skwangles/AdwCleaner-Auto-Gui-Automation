@@ -1,0 +1,4 @@
+PyAutoGUI~=0.9.53
+keyboard~=0.13.5
+pywin32~=300
+py2exe~=0.10.4.0
