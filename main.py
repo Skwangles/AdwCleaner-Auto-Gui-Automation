@@ -5,21 +5,15 @@ import keyboard
 import win32api
 import subprocess
 from win32api import GetSystemMetrics
-
-i_agree = [360, 373]  # Location of the I Agree button constant
-scan = [416, 218]  # Location of the Scan Now button Constant
-corner_button = [602, 425]
 metrics = [GetSystemMetrics(0), GetSystemMetrics(1)]
-correct_blue_value = 174
-
-#
-#
-# -------------------------AdwCleaner-----------------------------
-#
-#
 
 
 class AdwCleanerClean:
+    i_agree = [360, 373]  # Location of the I Agree button constant
+    scan = [416, 218]  # Location of the Scan Now button Constant
+    exit_button = [702, 0]
+    corner_button = [602, 425]
+    correct_blue_value = 174
 
     @classmethod
     def adw_cleaner_run(cls):
@@ -32,14 +26,16 @@ class AdwCleanerClean:
         time.sleep(5)  # Wait for clean
         coord = locate_image("bug")
         check_for_blue_screenshot = pyautogui.screenshot(region=(coord[0], coord[1], metrics[0], metrics[1]))
-        pixel_at_corner = check_for_blue_screenshot.getpixel(((coord[0] + corner_button[0]), (coord[1] + corner_button[1])))
-        while pixel_at_corner[2] is not correct_blue_value:  # Waits until done
+        pixel_at_corner = check_for_blue_screenshot.getpixel((
+            (coord[0] + cls.corner_button[0]), (coord[1] + cls.corner_button[1])
+        ))
+        while pixel_at_corner[2] is not cls.correct_blue_value:  # Waits until done
             time.sleep(3)  # Wait before trying again
             coord = locate_image("bug")
             # Screenshot of smaller area to save resources
             check_for_blue_screenshot = pyautogui.screenshot(region=(coord[0], coord[1], metrics[0], metrics[1]))
             pixel_at_corner = check_for_blue_screenshot.getpixel(
-                ((corner_button[0]), (corner_button[1]))
+                ((cls.corner_button[0]), (cls.corner_button[1]))
                 # Coordinates are in a smaller size because of screenshot starting at bug icon
             )
             print("Button not blue")
@@ -49,16 +45,17 @@ class AdwCleanerClean:
             ok_button_coordinates = locate_image("Ok")
             pyautogui.click(ok_button_coordinates[0], ok_button_coordinates[1])
             pyautogui.alert("Please select all items to quarantine - then press OK")
-
-        pyautogui.click(locate_image("bug")[0] + corner_button[0], locate_image("bug")[1] + corner_button[1])
+        coord = locate_image("bug")
+        pyautogui.click(coord[0] + cls.corner_button[0], coord[1] + cls.corner_button[1])
+        pyautogui.click(coord[0] + cls.exit_button[0], coord[1] + cls.exit_button[1])
 
     @classmethod
     def tap_i_agree(cls, coord):
-        pyautogui.click(coord[0] + i_agree[0], coord[1] + i_agree[1])
+        pyautogui.click(coord[0] + cls.i_agree[0], coord[1] + cls.i_agree[1])
 
     @classmethod
     def tap_scan(cls, coord):
-        pyautogui.click(coord[0] + scan[0], coord[1] + scan[1])
+        pyautogui.click(coord[0] + cls.scan[0], coord[1] + cls.scan[1])
 
 
 def locate_image(image):
