@@ -19,7 +19,7 @@ correct_blue_value = 174
 #
 
 
-class adwCleaner:
+class AdwCleanerClean:
 
     @classmethod
     def adw_cleaner_run(cls):
@@ -84,6 +84,6 @@ def locate_image(image):
 
 if __name__ == '__main__':
     pyautogui.FAILSAFE = True
-    adwCleaner().adw_cleaner_run()
+    AdwCleanerClean().adw_cleaner_run()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
