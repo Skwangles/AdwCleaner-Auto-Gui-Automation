@@ -6,8 +6,8 @@ import win32api
 import subprocess
 from win32api import GetSystemMetrics
 
-i_agree = [360, 373] # Location of the I Agree button constant
-scan = [416, 218] # Location of the Scan Now button Constant
+i_agree = [360, 373]  # Location of the I Agree button constant
+scan = [416, 218]  # Location of the Scan Now button Constant
 corner_button = [602, 425]
 metrics = [GetSystemMetrics(0), GetSystemMetrics(1)]
 bottom_right_blue = 174
@@ -24,14 +24,21 @@ def adw_cleaner_run():
     print("Started")
     pyautogui.confirm("Click OK if 1. AdwCleaner is open, 2. All other apps are closed.")
     # Find top left bug icon
-    coord = pyautogui.locateCenterOnScreen("buggy.png", region=(0, 0, GetSystemMetrics(0)/2, GetSystemMetrics(1)/2))
+    coord = pyautogui.locateCenterOnScreen('buggy.png', region=(0, 0, GetSystemMetrics(0) / 2, GetSystemMetrics(1) / 2))
+    while coord == None:
+        time.sleep(5)
+        coord = pyautogui.locateCenterOnScreen('buggy.png',
+                                               region=(0, 0, GetSystemMetrics(0) / 2, GetSystemMetrics(1) / 2))
     tap_i_agree(coord)
     tap_scan(coord)
     time.sleep(5)  # Wait for clean
+    pyautogui.moveTo(coord[0] + corner_button[0], coord[1] + corner_button[1], duration=3)
+    time.sleep(3)
+    pyautogui.moveTo(30, 30, duration=0)
     pixel_at_corner = pyautogui.pixel(coord[0] + corner_button[0], coord[1] + corner_button[1])
     while pixel_at_corner[2] != bottom_right_blue:  # Waits until done
         time.sleep(5)
-        pixel_at_corner = pyautogui.pixel(coord[0] + corner_button[0], coord[1] + corner_button[1])
+        pixel_at_corner = pyautogui.pixel(coord[0] + corner_button[0], coord[1] + corner_button[1])[2]
     # Move to Skip/Quarantine & Click
     pyautogui.moveTo(coord[0] + corner_button[0], coord[1] + corner_button[1], duration=0)
     pyautogui.click()
