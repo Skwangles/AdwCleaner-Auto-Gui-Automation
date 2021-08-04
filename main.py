@@ -25,7 +25,7 @@ def adw_cleaner_run():
     pyautogui.confirm("Click OK if 1. AdwCleaner is open, 2. All other apps are closed.")
     # Find top left bug icon
     coord = pyautogui.locateCenterOnScreen('buggy.png', region=(0, 0, GetSystemMetrics(0) / 2, GetSystemMetrics(1) / 2))
-    while coord == None:
+    while coord is None:
         time.sleep(5)
         coord = pyautogui.locateCenterOnScreen('buggy.png',
                                                region=(0, 0, GetSystemMetrics(0) / 2, GetSystemMetrics(1) / 2))
