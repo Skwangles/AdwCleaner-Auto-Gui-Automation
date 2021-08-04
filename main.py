@@ -1,9 +1,6 @@
 import pyautogui
 from pyautogui import *
 import time
-import keyboard
-import win32api
-import subprocess
 from win32api import GetSystemMetrics
 metrics = [GetSystemMetrics(0), GetSystemMetrics(1)]
 
@@ -19,7 +16,10 @@ class AdwCleanerClean:
     def adw_cleaner_run(cls):
         time.sleep(2)
         print("Started")
-        pyautogui.confirm("Click OK if 1. AdwCleaner is open, 2. All other apps are closed.")
+        result = pyautogui.confirm("Click OK if 1. AdwCleaner is open, 2. All other apps are closed.")
+        if result == "Cancel":
+            exit(0)
+        print("Confirmed")
         # Find top left bug icon
         cls.tap_i_agree(locate_image("bug"))
         cls.tap_scan(locate_image("bug"))
